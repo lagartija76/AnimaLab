@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="es"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Guía Interactiva: Adobe Character Animator&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chosen Palette: Warm Harmony --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Application Structure Plan: The application is structured as a tabbed single-page application (SPA) to break down the tutorial into manageable, non-linear sections: "Conceptos Básicos", "Ruta Rápida", "Ruta Creativa", and "Recursos". This task-oriented design allows users to either follow a linear path or jump directly to the information they need. The most complex part, "Ruta Creativa," uses an accordion-style layout to present steps sequentially without overwhelming the user. The core of this section is an interactive HTML/CSS diagram of the layer structure, which is more intuitive and engaging than the original text block, directly addressing a key learning challenge for beginners. This structure prioritizes guided learning and quick reference over a simple document scroll. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Visualization &amp; Content Choices:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>- Report Info: Layer structure for a puppet. Goal: Organize/Inform. Viz: Interactive nested list diagram styled with HTML/Tailwind to mimic a layer panel. Interaction: Hover effects provide context. Justification: Visually demonstrates the critical hierarchical relationships, making it easier to grasp than a plain code block. Library: Vanilla JS for interactivity.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>- Report Info: Mouth shapes (visemas) for lip-sync. Goal: Inform. Viz: A responsive grid of cards. Interaction: None, purely visual reference. Justification: A grid is more scannable and visually organized than a simple text list. Library: HTML/Tailwind.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>- Report Info: Step-by-step instructions. Goal: Inform/Guide. Viz: Styled, numbered lists with icons (Unicode). Interaction: Contained within accordion toggles. Justification: Breaks down processes into clear, sequential actions. Library: HTML/Tailwind.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #A58A5C;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #A58A5C;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-inactive {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.accordion-content {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: max-height 0.5s ease-out, padding 0.5s ease-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.layer-item {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: background-color 0.2s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.layer-item:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #F8F5F0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-[#FDFBF7] text-gray-800"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container mx-auto px-4 py-8 md:py-12"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;header class="text-center mb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-3xl md:text-4xl font-bold text-[#4E4333]"&gt;Guía Interactiva: Tu Primer Personaje&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-[#A58A5C] mt-2"&gt;Un recorrido paso a paso por Adobe Character Animator&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;nav class="flex justify-center border-b border-gray-200 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-target="conceptos" class="tab-btn py-4 px-6 block text-center border-b-2 tab-active"&gt;Conceptos Básicos&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-target="ruta-rapida" class="tab-btn py-4 px-6 block text-center border-b-2 tab-inactive"&gt;Ruta Rápida&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-target="ruta-creativa" class="tab-btn py-4 px-6 block text-center border-b-2 tab-inactive"&gt;Ruta Creativa&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-target="recursos" class="tab-btn py-4 px-6 block text-center border-b-2 tab-inactive"&gt;Recursos&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Sección 1: Conceptos Básicos --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="conceptos" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;h2 class="text-2xl font-semibold text-[#4E4333]"&gt;Entendiendo los Fundamentos&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-gray-600 mt-2"&gt;Antes de empezar, es crucial conocer los pilares del programa. Esta sección te introduce a los conceptos esenciales para que comprendas cómo Character Animator da vida a tus creaciones.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid md:grid-cols-2 gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-bold text-xl text-[#A58A5C] mb-3"&gt;¿Qué es un "Puppet"?<span class="Apple-converted-space">  </span>Puppet&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-700"&gt;En Character Animator, un "puppet" (marioneta) es tu personaje digital. No es un video ni una imagen estática, sino un archivo interactivo compuesto por capas, como una marioneta digital que puedes controlar con tus movimientos y tu voz. Es la fuente de la animación.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-bold text-xl text-[#A58A5C] mb-3"&gt;¿De Dónde Vienen? ↔️&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-700 mb-4"&gt;Tienes dos caminos principales para obtener un puppet:&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-inside list-disc space-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;&lt;span class="font-semibold"&gt;Usar una Plantilla:&lt;/span&gt; El programa incluye puppets de ejemplo listos para usar y modificar. Es la forma más rápida de empezar.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li&gt;&lt;span class="font-semibold"&gt;Crear desde Cero:&lt;/span&gt; Diseña tu propio personaje en Adobe Illustrator o Photoshop para un control creativo total.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Sección 2: Ruta Rápida --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="ruta-rapida" class="content-section hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;h2 class="text-2xl font-semibold text-[#4E4333]"&gt;El Camino Rápido: Usando una Plantilla&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-gray-600 mt-2"&gt;Esta es la mejor manera de familiarizarte con el programa sin sentirte abrumado. Sigue estos simples pasos para animar un personaje en minutos.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-sm border border-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ol class="space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#E9E3D9] text-[#A58A5C] font-bold mr-4"&gt;1&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;&lt;span class="font-semibold"&gt;Abre Character Animator.&lt;/span&gt; En la pantalla de inicio, busca la pestaña "Inicio".&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#E9E3D9] text-[#A58A5C] font-bold mr-4"&gt;2&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;&lt;span class="font-semibold"&gt;Elige un Puppet.&lt;/span&gt; Verás varios ejemplos como "Chloe" o "Red Monster". Te recomendamos empezar con "Chloe", ya que está muy bien estructurada para aprender.&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#E9E3D9] text-[#A58A5C] font-bold mr-4"&gt;3&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;span&gt;&lt;span class="font-semibold"&gt;Abre la Plantilla.&lt;/span&gt; Simplemente haz clic en el puppet. El programa lo abrirá y te llevará al espacio de trabajo de "Grabar".&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-start"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#E9E3D9] text-[#A58A5C] font-bold mr-4"&gt;4&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;&lt;span class="font-semibold"&gt;Prueba tu Personaje.&lt;/span&gt; Asegúrate de que tu cámara y micrófono estén activos. Habla, parpadea y muévete. El personaje imitará tus acciones en tiempo real.&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ol&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Sección 3: Ruta Creativa --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="ruta-creativa" class="content-section hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;h2 class="text-2xl font-semibold text-[#4E4333]"&gt;El Camino Creativo: Crear un Puppet desde Cero&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-gray-600 mt-2"&gt;Aquí es donde sucede la verdadera magia. Aprende a construir tu propio personaje desde cero en Illustrator o Photoshop para un control total.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="max-w-3xl mx-auto space-y-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Acordeón Paso 1 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="accordion-item bg-white rounded-lg shadow-sm border border-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="accordion-header w-full flex justify-between items-center p-5 text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-lg font-semibold text-[#4E4333]"&gt;Paso 1: La Estructura de Capas es CLAVE&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="transform transition-transform duration-300"&gt;▼&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="accordion-content px-5 pb-5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="mb-4 text-gray-700"&gt;El programa necesita una estructura de capas y nombres muy específica. Una organización incorrecta es la causa N°1 de problemas. La regla de oro: &lt;strong class="font-semibold"&gt;cada parte que quieras mover de forma independiente debe estar en su propia capa.&lt;/strong&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-[#F8F5F0] p-4 rounded-md font-mono text-sm text-gray-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="layer-item p-1 rounded"&gt;📁 TuArchivo.ai&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="pl-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="layer-item p-1 rounded font-semibold text-[#A58A5C]"&gt; L └── ➕ Personaje&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="pl-6 border-l-2 border-dashed border-[#d3c7b3] "&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div class="layer-item p-1 rounded"&gt;├── 👤 Cabeza&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div class="pl-6 border-l-2 border-dashed border-[#d3c7b3]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div class="layer-item p-1 rounded font-semibold text-[#A58A5C]"&gt;├── ➕ Ojo izquierdo&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div class="pl-6 border-l-2 border-dashed border-[#d3c7b3]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;div class="layer-item p-1 rounded"&gt;├── ⚫ Pupila&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;div class="layer-item p-1 rounded"&gt;└──<span class="Apple-converted-space">  </span>eyelid Párpado&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div class="layer-item p-1 rounded font-semibold text-[#A58A5C]"&gt;├── ➕ Ojo derecho&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div class="layer-item p-1 rounded"&gt;├── 〰️ Ceja izquierda&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div class="layer-item p-1 rounded"&gt;├── 〰️ Ceja derecha&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div class="layer-item p-1 rounded"&gt;└── 👄 Boca (Grupo)&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                             </span>&lt;div class="pl-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;div class="layer-item p-1 rounded text-gray-500"&gt;└── (Neutral, Sonrisa, etc.)&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div class="layer-item p-1 rounded"&gt;└── 🧍 Cuerpo&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div class="pl-6 border-l-2 border-dashed border-[#d3c7b3]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                             </span>&lt;div class="layer-item p-1 rounded text-gray-500"&gt;└── (Brazos, Piernas, etc.)&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p class="mt-4 text-gray-700"&gt;&lt;strong class="font-semibold text-[#A58A5C]"&gt;¿Qué significa el `+`?&lt;/strong&gt; Poner un `+` antes del nombre de un grupo (ej: `+Personaje`) le dice al programa que trate todo su contenido como una unidad independiente que se puede mover o deformar sin afectar al resto.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Acordeón Paso 2 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="accordion-item bg-white rounded-lg shadow-sm border border-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="accordion-header w-full flex justify-between items-center p-5 text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-lg font-semibold text-[#4E4333]"&gt;Paso 2: Diseñando la Cabeza y el Rostro&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="transform transition-transform duration-300"&gt;▼&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="accordion-content px-5 pb-5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p class="mb-4 text-gray-700"&gt;Ahora, a dibujar. Recuerda, cada elemento en su propia capa nombrada correctamente.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;ul class="space-y-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;li&gt;&lt;strong&gt;Cabeza y Ojos:&lt;/strong&gt; Dibuja la forma de la cabeza en su capa. Luego, crea un grupo para cada ojo (`+Ojo izquierdo`, `+Ojo derecho`). Dentro de cada uno, dibuja la `Pupila` y el `Párpado` en capas separadas.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;li&gt;&lt;strong&gt;Boca (Visemas):&lt;/strong&gt; Este es el paso más detallado para una sincronización de labios (lip-sync) perfecta. Crea un grupo llamado `Boca` y dentro, dibuja cada forma en su propia capa.&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;div class="mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-semibold mb-2"&gt;Formas de Boca Esenciales:&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-[#E9E3D9] rounded-md text-[#A58A5C]"&gt;Neutral&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-[#E9E3D9] rounded-md text-[#A58A5C]"&gt;Sonrisa&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-[#E9E3D9] rounded-md text-[#A58A5C]"&gt;Sorpresa&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-semibold mb-2 mt-4"&gt;Para Lip-Sync Completo:&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 text-center text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;Aa&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;D&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;Ee&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;F&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;L&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;M&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;Oh&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;R&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;S&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;Uh&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="p-2 bg-gray-100 rounded-md"&gt;W-Oo&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Acordeón Paso 3 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="accordion-item bg-white rounded-lg shadow-sm border border-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="accordion-header w-full flex justify-between items-center p-5 text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-lg font-semibold text-[#4E4333]"&gt;Paso 3: Importar, "Riggear" y Grabar&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="transform transition-transform duration-300"&gt;▼&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="accordion-content px-5 pb-5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="mb-4 text-gray-700"&gt;Una vez que tu diseño está listo en Illustrator o Photoshop, es hora de llevarlo a Character Animator y darle vida.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;ol class="space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li class="flex"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;span class="font-bold text-[#A58A5C] mr-2"&gt;1. Importar:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;span&gt;Guarda tu archivo `.ai` o `.psd`. En Character Animator, ve a &lt;strong class="font-semibold"&gt;Archivo &gt; Importar&lt;/strong&gt; y selecciona tu creación.&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li class="flex"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;span class="font-bold text-[#A58A5C] mr-2"&gt;2. Riggear:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;span&gt;Haz doble clic en tu puppet en el panel de "Proyecto" para ir al modo &lt;strong class="font-semibold"&gt;"Rig" (Plataforma)&lt;/strong&gt;. Aquí es donde le dices al programa qué es cada capa. Revisa que las etiquetas automáticas (Cabeza, Ojo, etc.) estén correctas. Si no, arrastra la etiqueta correcta a su capa.&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li class="flex"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;span class="font-bold text-[#A58A5C] mr-2"&gt;3. Grabar:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;span&gt;Haz clic en la pestaña &lt;strong class="font-semibold"&gt;"Grabar"&lt;/strong&gt;. Tu personaje personalizado aparecerá en escena, listo para que lo controles.&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ol&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Sección 4: Recursos --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="recursos" class="content-section hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;h2 class="text-2xl font-semibold text-[#4E4333]"&gt;Recursos para Seguir Aprendiendo&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;p class="text-gray-600 mt-2"&gt;El viaje no termina aquí. Estos recursos son fundamentales para profundizar tus habilidades y resolver dudas.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid md:grid-cols-3 gap-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold text-lg text-[#4E4333]"&gt;Ejemplos Oficiales&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-600 my-2"&gt;Descarga puppets profesionales y estudia su estructura. Es una mina de oro para el aprendizaje.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="https://characteranimator.adobe.com/walkthroughs" target="_blank" class="text-[#A58A5C] font-semibold hover:underline"&gt;Visitar →&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold text-lg text-[#4E4333]"&gt;Okay Samurai (YouTube)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-600 my-2"&gt;Considerado el mejor recurso no oficial, con tutoriales claros, creativos y muy prácticos.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="https://www.youtube.com/c/okaysamurai" target="_blank" class="text-[#A58A5C] font-semibold hover:underline"&gt;Ver Canal →&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold text-lg text-[#4E4333]"&gt;Guías de Usuario Adobe&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-600 my-2"&gt;Para consultas técnicas y una comprensión profunda de cada herramienta y comportamiento.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;a href="https://helpx.adobe.com/adobe-character-animator/user-guide.html" target="_blank" class="text-[#A58A5C] font-semibold hover:underline"&gt;Leer Guía →&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('DOMContentLoaded', function () {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const tabs = document.querySelectorAll('.tab-btn');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const sections = document.querySelectorAll('.content-section');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const accordions = document.querySelectorAll('.accordion-item');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>tabs.forEach(tab =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>tab.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const target = tab.getAttribute('data-target');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>tabs.forEach(t =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>t.classList.remove('tab-active');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>t.classList.add('tab-inactive');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>tab.classList.add('tab-active');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>tab.classList.remove('tab-inactive');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>sections.forEach(section =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (section.id === target) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>section.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>section.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>accordions.forEach(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const header = item.querySelector('.accordion-header');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const content = item.querySelector('.accordion-content');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const icon = header.querySelector('span');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>header.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const isOpen = content.style.maxHeight;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Close all other accordions</p>
+<p class="p1"><span class="Apple-converted-space">                </span>accordions.forEach(otherItem =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (otherItem !== item) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>otherItem.querySelector('.accordion-content').style.maxHeight = null;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>otherItem.querySelector('.accordion-content').style.paddingTop = null;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>otherItem.querySelector('.accordion-content').style.paddingBottom = null;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>otherItem.querySelector('.accordion-header span').style.transform = 'rotate(0deg)';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (isOpen) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>content.style.maxHeight = null;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>content.style.paddingTop = null;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>content.style.paddingBottom = null;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>icon.style.transform = 'rotate(0deg)';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>content.style.maxHeight = content.scrollHeight + 40 + "px";</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>content.style.paddingTop = '1.25rem';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>content.style.paddingBottom = '1.25rem';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>icon.style.transform = 'rotate(180deg)';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
