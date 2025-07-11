@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva de Audio para Character Animator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Warm Neutrals (Stone, Purple) -->
+    <!-- Application Structure Plan: A single-page application with a fixed sidebar for navigation and a main content area that dynamically updates. This structure transforms the linear guide into a non-linear, topic-based reference, allowing users to quickly find and focus on specific tasks without scrolling through irrelevant information. This model is ideal for technical documentation, enhancing usability and learning efficiency. -->
+    <!-- Visualization & Content Choices: The application uses styled cards, Unicode icons, and HTML/CSS diagrams to represent processes and UI elements. For example, 'Lip Sync' and 'Background Music' are presented as numbered steps in visually distinct cards. 'Multiple Channels' is shown as a stacked-div diagram simulating a timeline, and 'Triggers' are visualized in a mock-up of the Character Animator UI panel. This approach (Goal: Organize/Inform) makes abstract instructions more concrete and easier to understand. All interactions are handled with vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        .nav-link.active {
+            background-color: #9333ea; /* purple-600 */
+            color: white;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        
+        <aside class="w-full md:w-64 bg-white/80 backdrop-blur-sm shadow-lg md:shadow-none p-4 md:p-6 border-b md:border-r border-stone-200">
+            <h1 class="text-xl font-bold text-purple-700 mb-6">Guía de Audio / Character Animator</h1>
+            <nav id="main-nav">
+                <ul class="space-y-2">
+                    <li><a href="#" data-target="intro" class="nav-link active flex items-center gap-3 px-4 py-2 rounded-md text-stone-600 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200"><span>🏠</span> Introducción</a></li>
+                    <li><a href="#" data-target="lip-sync" class="nav-link flex items-center gap-3 px-4 py-2 rounded-md text-stone-600 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200"><span>👄</span> Sincronización Labial</a></li>
+                    <li><a href="#" data-target="background-music" class="nav-link flex items-center gap-3 px-4 py-2 rounded-md text-stone-600 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200"><span>🎵</span> Música de Fondo</a></li>
+                    <li><a href="#" data-target="sound-effects" class="nav-link flex items-center gap-3 px-4 py-2 rounded-md text-stone-600 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200"><span>💥</span> Efectos de Sonido</a></li>
+                    <li><a href="#" data-target="multi-channel" class="nav-link flex items-center gap-3 px-4 py-2 rounded-md text-stone-600 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200"><span>📊</span> Canales Múltiples</a></li>
+                    <li><a href="#" data-target="settings" class="nav-link flex items-center gap-3 px-4 py-2 rounded-md text-stone-600 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200"><span>⚙️</span> Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-6 md:p-10">
+            <div id="content-container">
+                
+                <section id="intro" class="content-section space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-2xl font-bold text-purple-800 mb-4">Integrando Audio en Character Animator</h2>
+                        <p class="text-stone-600">Integrar audio de manera efectiva es fundamental para dar vida a tus animaciones. Esta guía interactiva te mostrará cómo utilizar las funciones de audio de Character Animator para sincronizar labios, añadir música y activar efectos de sonido, logrando un resultado profesional. Navega por las secciones en el menú de la izquierda para explorar cada tema.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-bold text-purple-800 mb-4">Formatos de Audio Compatibles</h3>
+                        <p class="text-stone-600 mb-6">Para un flujo de trabajo óptimo, se recomienda editar y normalizar el volumen de tus archivos en un software como Adobe Audition antes de importarlos. Character Animator es compatible con varios formatos:</p>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="border border-stone-200 p-4 rounded-lg bg-stone-50">
+                                <h4 class="font-bold text-stone-700">WAV</h4>
+                                <p class="text-sm text-stone-500">Ideal para audio sin comprimir y de alta calidad. Es el formato recomendado para la sincronización de labios por su máxima precisión.</p>
+                            </div>
+                            <div class="border border-stone-200 p-4 rounded-lg bg-stone-50">
+                                <h4 class="font-bold text-stone-700">MP3</h4>
+                                <p class="text-sm text-stone-500">Formato comprimido muy común. Funciona bien para música de fondo o efectos donde la calidad máxima no es la prioridad.</p>
+                            </div>
+                             <div class="border border-stone-200 p-4 rounded-lg bg-stone-50">
+                                <h4 class="font-bold text-stone-700">AIFF</h4>
+                                <p class="text-sm text-stone-500">Equivalente de WAV en el ecosistema de Apple, también sin comprimir y de alta calidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="lip-sync" class="content-section hidden space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                         <h2 class="text-2xl font-bold text-purple-800 mb-4">Sincronización de Labios (Lip Sync)</h2>
+                         <p class="text-stone-600 mb-6">Esta es una de las funciones más potentes de Character Animator. La sincronización de labios automática analiza un archivo de audio y genera los movimientos de boca correspondientes en tu marioneta. Sigue estos pasos para lograrlo:</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <ol class="space-y-4">
+                            <li class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">1</div>
+                                <div>
+                                    <h4 class="font-bold">Selecciona tu Marioneta</h4>
+                                    <p class="text-stone-600">En el modo "Grabar", asegúrate de tener seleccionada la marioneta (puppet) correcta en el panel "Proyecto".</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">2</div>
+                                <div>
+                                    <h4 class="font-bold">Importa el Diálogo</h4>
+                                    <p class="text-stone-600">Ve a `Archivo > Importar` y selecciona tu archivo de audio (preferiblemente en formato WAV para mayor precisión).</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">3</div>
+                                <div>
+                                    <h4 class="font-bold">Añade a la Escena</h4>
+                                    <p class="text-stone-600">Arrastra el audio desde el panel "Proyecto" hasta la línea de tiempo, justo debajo de la pista de tu marioneta.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">4</div>
+                                <div>
+                                    <h4 class="font-bold">Genera el Lip Sync</h4>
+                                    <p class="text-stone-600">Selecciona la pista de la marioneta, y en el panel "Propiedades", haz clic en "Calcular desde audio de escena". Character Animator hará el resto.</p>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <section id="background-music" class="content-section hidden space-y-6">
+                     <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-2xl font-bold text-purple-800 mb-4">Cómo Poner Música de Fondo</h2>
+                        <p class="text-stone-600 mb-6">Añadir una banda sonora es un proceso sencillo para ambientar tu animación. Se gestiona directamente en la línea de tiempo.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">Pasos a seguir</h3>
+                            <ol class="space-y-4">
+                                <li class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">1</div>
+                                    <p class="text-stone-600">Importa tu archivo de música vía `Archivo > Importar`.</p>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">2</div>
+                                    <p class="text-stone-600">Arrastra el archivo a una nueva pista de audio en la línea de tiempo, debajo de tu diálogo.</p>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">3</div>
+                                    <p class="text-stone-600">Ajusta la duración arrastrando los extremos del clip de audio.</p>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="border border-stone-200 p-4 rounded-lg bg-stone-50">
+                            <h4 class="font-bold text-stone-700 mb-2">Ajuste de Volumen</h4>
+                            <p class="text-sm text-stone-600 mb-4">Para que la música no compita con el diálogo, selecciónala y ajusta el control de "Nivel" en el panel de Propiedades.</p>
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium">Nivel de Audio</label>
+                                <div class="w-full bg-stone-200 rounded-full h-2.5">
+                                    <div class="bg-purple-600 h-2.5 rounded-full" style="width: 45%"></div>
+                                </div>
+                                <p class="text-xs text-center text-stone-500">-10 dB (ejemplo)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="sound-effects" class="content-section hidden space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-2xl font-bold text-purple-800 mb-4">Efectos de Sonido con Disparadores (Triggers)</h2>
+                        <p class="text-stone-600 mb-6">Los "Disparadores" son perfectos para activar efectos de sonido en momentos específicos, como una risa o un golpe. Se configuran en el modo "Plataforma de Grabación".</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-lg mb-4">Configuración de un Disparador de Audio</h3>
+                        <div class="bg-stone-800 text-white p-4 rounded-lg font-mono text-sm">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-stone-300">Panel de Disparadores</span>
+                                <button class="bg-purple-600 text-white px-3 py-1 rounded text-xs">+ Crear Disparador</button>
+                            </div>
+                            <div class="bg-stone-700 p-3 rounded space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span>Risa</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-purple-400">♫ audio_risa.wav</span>
+                                        <span class="bg-stone-900 border border-stone-500 rounded px-2 py-1 text-xs">R</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between opacity-50">
+                                    <span>Aplauso</span>
+                                    <div class="flex items-center gap-2">
+                                         <span class="text-purple-400">👏 audio_aplauso.mp3</span>
+                                        <span class="bg-stone-900 border border-stone-500 rounded px-2 py-1 text-xs">A</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm mt-4 text-stone-600">En este ejemplo, al presionar la tecla "R" durante la grabación, se activará el sonido de la risa. La grabación captura esta acción para que se reproduzca siempre en el mismo punto.</p>
+                    </div>
+                </section>
+
+                <section id="multi-channel" class="content-section hidden space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-2xl font-bold text-purple-800 mb-4">Gestión de Canales Múltiples</h2>
+                        <p class="text-stone-600 mb-6">La línea de tiempo de Character Animator funciona con capas, permitiéndote organizar diferentes elementos de audio. Una buena organización es clave para una mezcla limpia.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-lg mb-4">Ejemplo de Línea de Tiempo</h3>
+                        <div class="space-y-2 p-4 border border-stone-200 rounded-lg">
+                            <div class="w-full bg-blue-200 text-blue-800 text-sm font-medium px-4 py-2 rounded">Pista 1: Marioneta (con Lip Sync)</div>
+                            <div class="w-full bg-indigo-200 text-indigo-800 text-sm font-medium px-4 py-2 rounded">Pista 2: Diálogo principal</div>
+                            <div class="w-3/4 bg-green-200 text-green-800 text-sm font-medium px-4 py-2 rounded">Pista 3: Música de fondo</div>
+                            <div class="w-1/4 ml-auto bg-orange-200 text-orange-800 text-sm font-medium px-4 py-2 rounded">Pista 4: Efecto de sonido</div>
+                        </div>
+                        <p class="text-sm mt-4 text-stone-600">Cada clip de audio se puede ajustar de forma independiente. Para mezclas complejas, es recomendable exportar el video y usar un software de audio dedicado como Adobe Audition.</p>
+                    </div>
+                </section>
+                
+                <section id="settings" class="content-section hidden space-y-6">
+                     <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-2xl font-bold text-purple-800 mb-4">Configuraciones de Audio Integradas</h2>
+                        <p class="text-stone-600 mb-6">Puedes configurar tus dispositivos de entrada y salida de audio en `Editar > Preferencias > Audio Hardware`.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm grid md:grid-cols-2 gap-6">
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-bold text-stone-800">Entrada Predeterminada</h4>
+                            <p class="text-stone-600">Aquí seleccionas el micrófono que usarás para grabar tu voz en tiempo real, si no estás utilizando un archivo pregrabado.</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                             <h4 class="font-bold text-stone-800">Salida Predeterminada</h4>
+                            <p class="text-stone-600">Define por dónde escucharás el audio (altavoces o auriculares). Se recomienda usar auriculares para evitar que el micrófono capte el sonido de salida y genere eco.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            const nav = document.getElementById('main-nav');
+            nav.addEventListener('click', (e) => {
+                const link = e.target.closest('.nav-link');
+                if (!link) return;
+                
+                e.preventDefault();
+
+                const targetId = link.dataset.target;
+                if (!targetId) return;
+
+                navLinks.forEach(navLink => {
+                    navLink.classList.remove('active');
+                });
+                link.classList.add('active');
+                
+                contentSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
