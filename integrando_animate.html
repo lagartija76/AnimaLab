@@ -1,256 +1,477 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+
+<html lang="es">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-    span.s1 {font: 12.0px 'Apple Color Emoji'}
-  </style>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Guía Interactiva: Integrando Character Animator en Animate</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: Warm Neutrals -->
+
+    <!-- Application Structure Plan: The application is structured as a task-oriented interactive guide. It starts with a clear choice between the two main workflows ("Recommended" vs. "Fast"). Clicking a method dynamically displays its specific, two-column step-by-step instructions (Character Animator steps on the left, Animate steps on the right). This is followed by static, easily scannable sections for a direct comparison and key considerations. This structure was chosen because it turns passive reading into an active, choice-driven experience. The two-column layout for steps directly mirrors the user's real-world workflow of switching between two applications, enhancing clarity and reducing cognitive load compared to a single, linear list of instructions. -->
+
+    <!-- Visualization & Content Choices: Report Info: Two distinct workflows -> Goal: Allow user to choose and compare -> Viz/Presentation: Interactive tabs/buttons (HTML/Tailwind) -> Interaction: JS click events to toggle visibility of content sections -> Justification: Empowers user to control the information flow. Report Info: Step-by-step instructions for each app -> Goal: Guide user clearly -> Viz/Presentation: Two-column grid layout with ordered lists (HTML/Tailwind) -> Interaction: Dynamically shown/hidden based on tab selection -> Justification: Visually separates tasks by application, which is highly intuitive for this process. Report Info: Pros and Cons -> Goal: Summarize for quick decision-making -> Viz/Presentation: Styled lists with Unicode icons (✅/❌) in a comparison layout -> Interaction: Static -> Justification: Highly scannable and universally understood visual cues. -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+
+        body {
+
+            font-family: 'Inter', sans-serif;
+
+            background-color: #fdfcfb;
+
+            color: #3d3d3d;
+
+        }
+
+        .active-tab {
+
+            background-color: #c2410c;
+
+            color: #ffffff;
+
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+        }
+
+        .inactive-tab {
+
+            background-color: #e7e5e4;
+
+            color: #57534e;
+
+        }
+
+        .content-section {
+
+            display: none;
+
+            transition: opacity 0.5s ease-in-out;
+
+        }
+
+        .content-section.visible {
+
+            display: block;
+
+        }
+
+        .card {
+
+            background-color: #ffffff;
+
+            border: 1px solid #e7e5e4;
+
+            border-radius: 0.75rem;
+
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+
+        }
+
+        .app-icon {
+
+            font-size: 1.75rem;
+
+            margin-right: 0.5rem;
+
+        }
+
+    </style>
+
 </head>
-<body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="es"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Guía Interactiva: Integrando Character Animator en Animate&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chosen Palette: Warm Neutrals --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Application Structure Plan: The application is structured as a task-oriented interactive guide. It starts with a clear choice between the two main workflows ("Recommended" vs. "Fast"). Clicking a method dynamically displays its specific, two-column step-by-step instructions (Character Animator steps on the left, Animate steps on the right). This is followed by static, easily scannable sections for a direct comparison and key considerations. This structure was chosen because it turns passive reading into an active, choice-driven experience. The two-column layout for steps directly mirrors the user's real-world workflow of switching between two applications, enhancing clarity and reducing cognitive load compared to a single, linear list of instructions. --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Visualization &amp; Content Choices: Report Info: Two distinct workflows -&gt; Goal: Allow user to choose and compare -&gt; Viz/Presentation: Interactive tabs/buttons (HTML/Tailwind) -&gt; Interaction: JS click events to toggle visibility of content sections -&gt; Justification: Empowers user to control the information flow. Report Info: Step-by-step instructions for each app -&gt; Goal: Guide user clearly -&gt; Viz/Presentation: Two-column grid layout with ordered lists (HTML/Tailwind) -&gt; Interaction: Dynamically shown/hidden based on tab selection -&gt; Justification: Visually separates tasks by application, which is highly intuitive for this process. Report Info: Pros and Cons -&gt; Goal: Summarize for quick decision-making -&gt; Viz/Presentation: Styled lists with Unicode icons (<span class="s1">✅</span>/<span class="s1">❌</span>) in a comparison layout -&gt; Interaction: Static -&gt; Justification: Highly scannable and universally understood visual cues. --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #fdfcfb;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #3d3d3d;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.active-tab {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #c2410c;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.inactive-tab {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #e7e5e4;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #57534e;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.content-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.5s ease-in-out;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.content-section.visible {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #e7e5e4;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.app-icon {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-right: 0.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body class="antialiased"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;header class="text-center mb-10"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-4xl font-bold text-orange-900 mb-2"&gt;Integrando Character Animator en Animate&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-lg text-stone-600"&gt;Una guía interactiva para optimizar tu flujo de trabajo de animación.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;main&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="intro" class="mb-12"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="card p-6 text-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold text-stone-800 mb-3"&gt;Elige tu Flujo de Trabajo&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-stone-600 max-w-3xl mx-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>Existen dos métodos principales para llevar tus personajes de Character Animator a Adobe Animate. El método recomendado ofrece la máxima calidad y flexibilidad, mientras que el método rápido es más directo. Selecciona una opción para ver los pasos detallados, comparar sus ventajas y decidir cuál se adapta mejor a tu proyecto.</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="method-selector" class="flex flex-col sm:flex-row justify-center gap-4 mb-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button id="btn-recommended" class="flex-1 text-lg font-bold py-4 px-6 rounded-lg transition-all duration-300 ease-in-out active-tab"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>Método Recomendado (PNG + WAV)</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button id="btn-fast" class="flex-1 text-lg font-bold py-4 px-6 rounded-lg transition-all duration-300 ease-in-out inactive-tab"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>Método Rápido (Video)</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="workflow-details"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="content-recommended" class="content-section visible card p-6 md:p-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-2xl font-bold text-stone-800 mb-6"&gt;Pasos del Método Recomendado&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid md:grid-cols-2 gap-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="text-xl font-semibold mb-4 flex items-center"&gt;&lt;span class="app-icon"&gt;<span class="s1">🧍</span>&lt;/span&gt;En Character Animator&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ol class="list-decimal list-inside space-y-3 text-stone-600"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Prepara tu Escena:&lt;/strong&gt; Asegúrate de que tu escena esté grabada y lista para la exportación.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Exporta a Media Encoder:&lt;/strong&gt; Dirígete a &lt;span class="font-semibold"&gt;Archivo &gt; Exportar &gt; Video vía Adobe Media Encoder&lt;/span&gt;.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Configura el Formato de Salida:&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;ul class="list-disc list-inside ml-4 mt-2 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Selecciona &lt;span class="font-semibold"&gt;PNG Sequence&lt;/span&gt; como formato. Esto es fundamental para preservar la transparencia.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Activa la opción para exportar un &lt;span class="font-semibold"&gt;canal alfa&lt;/span&gt;.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Adicionalmente, exporta el audio por separado como un archivo &lt;span class="font-semibold"&gt;WAV&lt;/span&gt;.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ol&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="text-xl font-semibold mb-4 flex items-center"&gt;&lt;span class="app-icon"&gt;<span class="s1">📽️</span>&lt;/span&gt;En Adobe Animate&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ol class="list-decimal list-inside space-y-3 text-stone-600"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Abre tu Proyecto:&lt;/strong&gt; Inicia el archivo de Animate donde planeas integrar a tu personaje.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Importa la Secuencia de PNG:&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;ul class="list-disc list-inside ml-4 mt-2 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Ve a &lt;span class="font-semibold"&gt;Archivo &gt; Importar &gt; Importar a escenario&lt;/span&gt;.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Selecciona la &lt;span class="font-semibold"&gt;primera imagen&lt;/span&gt; de tu secuencia. Animate te consultará si deseas importar toda la secuencia. Confirma.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Importa el Audio (WAV):&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;ul class="list-disc list-inside ml-4 mt-2 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Dirígete a &lt;span class="font-semibold"&gt;Archivo &gt; Importar &gt; Importar a biblioteca&lt;/span&gt;.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Arrastra el archivo WAV desde tu panel de Biblioteca a una &lt;span class="font-semibold"&gt;nueva capa&lt;/span&gt; en la línea de tiempo.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Ajusta y Continúa:&lt;/strong&gt; Ahora tienes la animación y el audio en capas separadas, listos para ajustar o complementar.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ol&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="content-fast" class="content-section card p-6 md:p-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-2xl font-bold text-stone-800 mb-6"&gt;Pasos del Método Rápido&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                     </span>&lt;div class="grid md:grid-cols-2 gap-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="text-xl font-semibold mb-4 flex items-center"&gt;&lt;span class="app-icon"&gt;<span class="s1">🧍</span>&lt;/span&gt;En Character Animator&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ol class="list-decimal list-inside space-y-3 text-stone-600"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Prepara tu Escena:&lt;/strong&gt; Asegúrate de que tu escena esté grabada y lista para la exportación.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Exporta a Media Encoder:&lt;/strong&gt; Dirígete a &lt;span class="font-semibold"&gt;Archivo &gt; Exportar &gt; Video vía Adobe Media Encoder&lt;/span&gt;.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Configura el Formato de Salida:&lt;/strong&gt; Exporta tu video en un formato estándar como &lt;span class="font-semibold"&gt;H.264 (MP4)&lt;/span&gt;.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ol&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="text-xl font-semibold mb-4 flex items-center"&gt;&lt;span class="app-icon"&gt;<span class="s1">📽️</span>&lt;/span&gt;En Adobe Animate&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                             </span>&lt;ol class="list-decimal list-inside space-y-3 text-stone-600"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Abre tu Proyecto:&lt;/strong&gt; Inicia el archivo de Animate.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;Importa el Video:&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;ul class="list-disc list-inside ml-4 mt-2 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Ve a &lt;span class="font-semibold"&gt;Archivo &gt; Importar &gt; Importar a escenario&lt;/span&gt;.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;li&gt;Selecciona tu archivo de video MP4. Animate lo importará como un único clip de video.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;&lt;strong&gt;¡Listo!:&lt;/strong&gt; El video estará en tu escenario. Ten en cuenta la consideración sobre la transparencia.&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ol&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="comparison" class="mt-12"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>&lt;h2 class="text-2xl font-bold text-stone-800 mb-6 text-center"&gt;Comparativa de Métodos&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div class="grid md:grid-cols-2 gap-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="card p-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-xl font-semibold mb-4 text-center"&gt;Método Recomendado (PNG + WAV)&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li class="flex items-start"&gt;&lt;span class="text-green-600 mr-2"&gt;<span class="s1">✅</span>&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Máxima Calidad y Control:&lt;/strong&gt; Conserva la calidad original sin compresión de video.&lt;/div&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li class="flex items-start"&gt;&lt;span class="text-green-600 mr-2"&gt;<span class="s1">✅</span>&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Soporte de Transparencia:&lt;/strong&gt; El canal alfa se mantiene, perfecto para superponer sobre otros elementos.&lt;/div&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li class="flex items-start"&gt;&lt;span class="text-green-600 mr-2"&gt;<span class="s1">✅</span>&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Audio Separado:&lt;/strong&gt; Facilita la edición y sincronización precisa del audio en Animate.&lt;/div&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                             </span>&lt;li class="flex items-start"&gt;&lt;span class="text-red-500 mr-2"&gt;<span class="s1">❌</span>&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Más Pasos:&lt;/strong&gt; Requiere gestionar una secuencia de imágenes y un archivo de audio por separado.&lt;/div&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                     </span>&lt;div class="card p-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-xl font-semibold mb-4 text-center"&gt;Método Rápido (Video)&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ul class="space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li class="flex items-start"&gt;&lt;span class="text-green-600 mr-2"&gt;<span class="s1">✅</span>&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Simple y Directo:&lt;/strong&gt; Proceso de exportación e importación muy rápido.&lt;/div&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li class="flex items-start"&gt;&lt;span class="text-green-600 mr-2"&gt;<span class="s1">✅</span>&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Archivo Único:&lt;/strong&gt; Gestionas un solo archivo de video que contiene tanto la imagen como el sonido.&lt;/div&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;li class="flex items-start"&gt;&lt;span class="text-red-500 mr-2"&gt;<span class="s1">❌</span>&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Sin Transparencia:&lt;/strong&gt; Los formatos de video estándar como MP4 no soportan canal alfa.&lt;/div&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                             </span>&lt;li class="flex items-start"&gt;&lt;span class="text-red-500 mr-2"&gt;<span class="s1">❌</span>&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Menos Flexibilidad:&lt;/strong&gt; La animación y el audio están fusionados, dificultando ediciones posteriores.&lt;/div&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">             </span>&lt;section id="final-considerations" class="mt-12"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>&lt;h2 class="text-2xl font-bold text-stone-800 mb-6 text-center"&gt;Consideraciones Importantes&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="card p-6 bg-stone-100 border-stone-200"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul class="space-y-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-start"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="text-xl mr-3"&gt;<span class="s1">⚠️</span>&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-semibold text-stone-800"&gt;Sin "Dynamic Link" Directo&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-stone-600"&gt;A diferencia de la integración con After Effects o Premiere Pro, no existe una conexión "Dynamic Link" con Animate. La exportación e importación son siempre necesarias.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-start"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                             </span>&lt;span class="text-xl mr-3"&gt;<span class="s1">🎨</span>&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-semibold text-stone-800"&gt;Calidad y Transparencia&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-stone-600"&gt;La exportación como secuencia de PNGs es la alternativa óptima para mantener la calidad y, fundamentalmente, la transparencia de tu personaje.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="flex items-start"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="text-xl mr-3"&gt;<span class="s1">🧱</span>&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                             </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-semibold text-stone-800"&gt;Las Capas se Fusionan&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-stone-600"&gt;Al importar una secuencia de PNGs, las capas individuales de tu títere de Character Animator no se conservan como capas editables en Animate. Se importa la animación final "aplanada".&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;footer class="text-center mt-12 text-stone-500 text-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p&gt;Guía interactiva creada para facilitar la integración entre herramientas de Adobe.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/footer&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', function() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const btnRecommended = document.getElementById('btn-recommended');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const btnFast = document.getElementById('btn-fast');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const contentRecommended = document.getElementById('content-recommended');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const contentFast = document.getElementById('content-fast');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>function showTab(tabToShow, btnToActivate) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Hide all content sections</p>
-<p class="p1"><span class="Apple-converted-space">                </span>contentRecommended.classList.remove('visible');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>contentFast.classList.remove('visible');</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Deactivate all buttons</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btnRecommended.classList.remove('active-tab');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btnRecommended.classList.add('inactive-tab');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btnFast.classList.remove('active-tab');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btnFast.classList.add('inactive-tab');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Show the selected content and activate the button</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tabToShow.classList.add('visible');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btnToActivate.classList.add('active-tab');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btnToActivate.classList.remove('inactive-tab');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>btnRecommended.addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>showTab(contentRecommended, btnRecommended);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>btnFast.addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>showTab(contentFast, btnFast);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<body class="antialiased">
+
+
+
+    <div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
+
+
+
+        <header class="text-center mb-10">
+
+            <h1 class="text-4xl font-bold text-orange-900 mb-2">Integrando Character Animator en Animate</h1>
+
+            <p class="text-lg text-stone-600">Una guía interactiva para optimizar tu flujo de trabajo de animación.</p>
+
+        </header>
+
+
+
+        <main>
+
+            <section id="intro" class="mb-12">
+
+                <div class="card p-6 text-center">
+
+                    <h2 class="text-2xl font-bold text-stone-800 mb-3">Elige tu Flujo de Trabajo</h2>
+
+                    <p class="text-stone-600 max-w-3xl mx-auto">
+
+                        Existen dos métodos principales para llevar tus personajes de Character Animator a Adobe Animate. El método recomendado ofrece la máxima calidad y flexibilidad, mientras que el método rápido es más directo. Selecciona una opción para ver los pasos detallados, comparar sus ventajas y decidir cuál se adapta mejor a tu proyecto.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+            
+
+            <section id="method-selector" class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+
+                <button id="btn-recommended" class="flex-1 text-lg font-bold py-4 px-6 rounded-lg transition-all duration-300 ease-in-out active-tab">
+
+                    Método Recomendado (PNG + WAV)
+
+                </button>
+
+                <button id="btn-fast" class="flex-1 text-lg font-bold py-4 px-6 rounded-lg transition-all duration-300 ease-in-out inactive-tab">
+
+                    Método Rápido (Video)
+
+                </button>
+
+            </section>
+
+            
+
+            <section id="workflow-details">
+
+                <div id="content-recommended" class="content-section visible card p-6 md:p-8">
+
+                    <h3 class="text-2xl font-bold text-stone-800 mb-6">Pasos del Método Recomendado</h3>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+
+                        <div>
+
+                            <h4 class="text-xl font-semibold mb-4 flex items-center"><span class="app-icon">🧍</span>En Character Animator</h4>
+
+                            <ol class="list-decimal list-inside space-y-3 text-stone-600">
+
+                                <li><strong>Prepara tu Escena:</strong> Asegúrate de que tu escena esté grabada y lista para la exportación.</li>
+
+                                <li><strong>Exporta a Media Encoder:</strong> Dirígete a <span class="font-semibold">Archivo > Exportar > Video vía Adobe Media Encoder</span>.</li>
+
+                                <li><strong>Configura el Formato de Salida:</strong>
+
+                                    <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+
+                                        <li>Selecciona <span class="font-semibold">PNG Sequence</span> como formato. Esto es fundamental para preservar la transparencia.</li>
+
+                                        <li>Activa la opción para exportar un <span class="font-semibold">canal alfa</span>.</li>
+
+                                        <li>Adicionalmente, exporta el audio por separado como un archivo <span class="font-semibold">WAV</span>.</li>
+
+                                    </ul>
+
+                                </li>
+
+                            </ol>
+
+                        </div>
+
+                        <div>
+
+                            <h4 class="text-xl font-semibold mb-4 flex items-center"><span class="app-icon">📽️</span>En Adobe Animate</h4>
+
+                            <ol class="list-decimal list-inside space-y-3 text-stone-600">
+
+                                <li><strong>Abre tu Proyecto:</strong> Inicia el archivo de Animate donde planeas integrar a tu personaje.</li>
+
+                                <li><strong>Importa la Secuencia de PNG:</strong>
+
+                                    <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+
+                                        <li>Ve a <span class="font-semibold">Archivo > Importar > Importar a escenario</span>.</li>
+
+                                        <li>Selecciona la <span class="font-semibold">primera imagen</span> de tu secuencia. Animate te consultará si deseas importar toda la secuencia. Confirma.</li>
+
+                                    </ul>
+
+                                </li>
+
+                                <li><strong>Importa el Audio (WAV):</strong>
+
+                                     <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+
+                                        <li>Dirígete a <span class="font-semibold">Archivo > Importar > Importar a biblioteca</span>.</li>
+
+                                        <li>Arrastra el archivo WAV desde tu panel de Biblioteca a una <span class="font-semibold">nueva capa</span> en la línea de tiempo.</li>
+
+                                    </ul>
+
+                                </li>
+
+                                <li><strong>Ajusta y Continúa:</strong> Ahora tienes la animación y el audio en capas separadas, listos para ajustar o complementar.</li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div id="content-fast" class="content-section card p-6 md:p-8">
+
+                    <h3 class="text-2xl font-bold text-stone-800 mb-6">Pasos del Método Rápido</h3>
+
+                     <div class="grid md:grid-cols-2 gap-8">
+
+                        <div>
+
+                            <h4 class="text-xl font-semibold mb-4 flex items-center"><span class="app-icon">🧍</span>En Character Animator</h4>
+
+                            <ol class="list-decimal list-inside space-y-3 text-stone-600">
+
+                                <li><strong>Prepara tu Escena:</strong> Asegúrate de que tu escena esté grabada y lista para la exportación.</li>
+
+                                <li><strong>Exporta a Media Encoder:</strong> Dirígete a <span class="font-semibold">Archivo > Exportar > Video vía Adobe Media Encoder</span>.</li>
+
+                                <li><strong>Configura el Formato de Salida:</strong> Exporta tu video en un formato estándar como <span class="font-semibold">H.264 (MP4)</span>.</li>
+
+                            </ol>
+
+                        </div>
+
+                        <div>
+
+                            <h4 class="text-xl font-semibold mb-4 flex items-center"><span class="app-icon">📽️</span>En Adobe Animate</h4>
+
+                             <ol class="list-decimal list-inside space-y-3 text-stone-600">
+
+                                <li><strong>Abre tu Proyecto:</strong> Inicia el archivo de Animate.</li>
+
+                                <li><strong>Importa el Video:</strong>
+
+                                    <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+
+                                        <li>Ve a <span class="font-semibold">Archivo > Importar > Importar a escenario</span>.</li>
+
+                                        <li>Selecciona tu archivo de video MP4. Animate lo importará como un único clip de video.</li>
+
+                                    </ul>
+
+                                </li>
+
+                                <li><strong>¡Listo!:</strong> El video estará en tu escenario. Ten en cuenta la consideración sobre la transparencia.</li>
+
+                            </ol>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            
+
+            <section id="comparison" class="mt-12">
+
+                 <h2 class="text-2xl font-bold text-stone-800 mb-6 text-center">Comparativa de Métodos</h2>
+
+                 <div class="grid md:grid-cols-2 gap-8">
+
+                    <div class="card p-6">
+
+                        <h3 class="text-xl font-semibold mb-4 text-center">Método Recomendado (PNG + WAV)</h3>
+
+                        <ul class="space-y-2">
+
+                            <li class="flex items-start"><span class="text-green-600 mr-2">✅</span><div><strong>Máxima Calidad y Control:</strong> Conserva la calidad original sin compresión de video.</div></li>
+
+                            <li class="flex items-start"><span class="text-green-600 mr-2">✅</span><div><strong>Soporte de Transparencia:</strong> El canal alfa se mantiene, perfecto para superponer sobre otros elementos.</div></li>
+
+                            <li class="flex items-start"><span class="text-green-600 mr-2">✅</span><div><strong>Audio Separado:</strong> Facilita la edición y sincronización precisa del audio en Animate.</div></li>
+
+                             <li class="flex items-start"><span class="text-red-500 mr-2">❌</span><div><strong>Más Pasos:</strong> Requiere gestionar una secuencia de imágenes y un archivo de audio por separado.</div></li>
+
+                        </ul>
+
+                    </div>
+
+                     <div class="card p-6">
+
+                        <h3 class="text-xl font-semibold mb-4 text-center">Método Rápido (Video)</h3>
+
+                        <ul class="space-y-2">
+
+                            <li class="flex items-start"><span class="text-green-600 mr-2">✅</span><div><strong>Simple y Directo:</strong> Proceso de exportación e importación muy rápido.</div></li>
+
+                            <li class="flex items-start"><span class="text-green-600 mr-2">✅</span><div><strong>Archivo Único:</strong> Gestionas un solo archivo de video que contiene tanto la imagen como el sonido.</div></li>
+
+                            <li class="flex items-start"><span class="text-red-500 mr-2">❌</span><div><strong>Sin Transparencia:</strong> Los formatos de video estándar como MP4 no soportan canal alfa.</div></li>
+
+                             <li class="flex items-start"><span class="text-red-500 mr-2">❌</span><div><strong>Menos Flexibilidad:</strong> La animación y el audio están fusionados, dificultando ediciones posteriores.</div></li>
+
+                        </ul>
+
+                    </div>
+
+                 </div>
+
+            </section>
+
+
+
+             <section id="final-considerations" class="mt-12">
+
+                 <h2 class="text-2xl font-bold text-stone-800 mb-6 text-center">Consideraciones Importantes</h2>
+
+                <div class="card p-6 bg-stone-100 border-stone-200">
+
+                    <ul class="space-y-4">
+
+                        <li class="flex items-start">
+
+                            <span class="text-xl mr-3">⚠️</span>
+
+                            <div>
+
+                                <h4 class="font-semibold text-stone-800">Sin "Dynamic Link" Directo</h4>
+
+                                <p class="text-stone-600">A diferencia de la integración con After Effects o Premiere Pro, no existe una conexión "Dynamic Link" con Animate. La exportación e importación son siempre necesarias.</p>
+
+                            </div>
+
+                        </li>
+
+                        <li class="flex items-start">
+
+                             <span class="text-xl mr-3">🎨</span>
+
+                            <div>
+
+                                <h4 class="font-semibold text-stone-800">Calidad y Transparencia</h4>
+
+                                <p class="text-stone-600">La exportación como secuencia de PNGs es la alternativa óptima para mantener la calidad y, fundamentalmente, la transparencia de tu personaje.</p>
+
+                            </div>
+
+                        </li>
+
+                        <li class="flex items-start">
+
+                            <span class="text-xl mr-3">🧱</span>
+
+                             <div>
+
+                                <h4 class="font-semibold text-stone-800">Las Capas se Fusionan</h4>
+
+                                <p class="text-stone-600">Al importar una secuencia de PNGs, las capas individuales de tu títere de Character Animator no se conservan como capas editables en Animate. Se importa la animación final "aplanada".</p>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+
+        <footer class="text-center mt-12 text-stone-500 text-sm">
+
+            <p>Guía interactiva creada para facilitar la integración entre herramientas de Adobe.</p>
+
+        </footer>
+
+
+
+    </div>
+
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const btnRecommended = document.getElementById('btn-recommended');
+
+            const btnFast = document.getElementById('btn-fast');
+
+            const contentRecommended = document.getElementById('content-recommended');
+
+            const contentFast = document.getElementById('content-fast');
+
+
+
+            function showTab(tabToShow, btnToActivate) {
+
+                // Hide all content sections
+
+                contentRecommended.classList.remove('visible');
+
+                contentFast.classList.remove('visible');
+
+                
+
+                // Deactivate all buttons
+
+                btnRecommended.classList.remove('active-tab');
+
+                btnRecommended.classList.add('inactive-tab');
+
+                btnFast.classList.remove('active-tab');
+
+                btnFast.classList.add('inactive-tab');
+
+
+
+                // Show the selected content and activate the button
+
+                tabToShow.classList.add('visible');
+
+                btnToActivate.classList.add('active-tab');
+
+                btnToActivate.classList.remove('inactive-tab');
+
+            }
+
+
+
+            btnRecommended.addEventListener('click', () => {
+
+                showTab(contentRecommended, btnRecommended);
+
+            });
+
+
+
+            btnFast.addEventListener('click', () => {
+
+                showTab(contentFast, btnFast);
+
+            });
+
+        });
+
+    </script>
+
 </body>
+
 </html>
